@@ -9,17 +9,6 @@ using DapperExtensions.Sql;
 
 namespace DapperExtensions
 {
-    public interface IDapperExtensionsConfiguration
-    {
-        Type DefaultMapper { get; }
-        IList<Assembly> MappingAssemblies { get; }
-        ISqlDialect Dialect { get; }
-        IClassMapper GetMap(Type entityType);
-        IClassMapper GetMap<T>() where T : class;
-        void ClearCache();
-        Guid GetNextGuid();
-    }
-
     public class DapperExtensionsConfiguration : IDapperExtensionsConfiguration
     {
         private readonly ConcurrentDictionary<Type, IClassMapper> _classMaps = new ConcurrentDictionary<Type, IClassMapper>();
@@ -71,13 +60,13 @@ namespace DapperExtensions
 
         public Guid GetNextGuid()
         {
-            byte[] b = Guid.NewGuid().ToByteArray();
-            DateTime dateTime = new DateTime(1900, 1, 1);
-            DateTime now = DateTime.Now;
-            TimeSpan timeSpan = new TimeSpan(now.Ticks - dateTime.Ticks);
-            TimeSpan timeOfDay = now.TimeOfDay;
-            byte[] bytes1 = BitConverter.GetBytes(timeSpan.Days);
-            byte[] bytes2 = BitConverter.GetBytes((long)(timeOfDay.TotalMilliseconds / 3.333333));
+            var b = Guid.NewGuid().ToByteArray();
+            var dateTime = new DateTime(1900, 1, 1);
+            var now = DateTime.UtcNow;
+            var timeSpan = new TimeSpan(now.Ticks - dateTime.Ticks);
+            var timeOfDay = now.TimeOfDay;
+            var bytes1 = BitConverter.GetBytes(timeSpan.Days);
+            var bytes2 = BitConverter.GetBytes((long)(timeOfDay.TotalMilliseconds / 3.333333));
             Array.Reverse(bytes1);
             Array.Reverse(bytes2);
             Array.Copy(bytes1, bytes1.Length - 2, b, b.Length - 6, 2);

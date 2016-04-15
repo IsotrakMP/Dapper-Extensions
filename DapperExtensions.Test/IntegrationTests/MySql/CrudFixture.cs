@@ -16,7 +16,7 @@ namespace DapperExtensions.Test.IntegrationTests.MySql
             [Test]
             public void AddsEntityToDatabase_ReturnsKey()
             {
-                Person p = new Person { Active = true, FirstName = "Foo", LastName = "Bar", DateCreated = DateTime.UtcNow };
+                var p = new Person { Active = true, FirstName = "Foo", LastName = "Bar", DateCreated = DateTime.UtcNow };
                 int id = Db.Insert(p);
                 Assert.AreEqual(1, id);
                 Assert.AreEqual(1, p.Id);
@@ -25,7 +25,7 @@ namespace DapperExtensions.Test.IntegrationTests.MySql
             [Test]
             public void AddsEntityToDatabase_ReturnsCompositeKey()
             {
-                Multikey m = new Multikey { Key2 = "key", Value = "foo" };
+                var m = new Multikey { Key2 = "key", Value = "foo" };
                 var key = Db.Insert(m);
                 Assert.AreEqual(1, key.Key1);
                 Assert.AreEqual("key", key.Key2);
@@ -34,7 +34,7 @@ namespace DapperExtensions.Test.IntegrationTests.MySql
             [Test]
             public void AddsEntityToDatabase_ReturnsGeneratedPrimaryKey()
             {
-                Animal a1 = new Animal { Name = "Foo" };
+                var a1 = new Animal { Name = "Foo" };
                 Db.Insert(a1);
 
                 var a2 = Db.Get<Animal>(a1.Id);
@@ -45,9 +45,9 @@ namespace DapperExtensions.Test.IntegrationTests.MySql
             [Test]
             public void AddsMultipleEntitiesToDatabase()
             {
-                Animal a1 = new Animal { Name = "Foo" };
-                Animal a2 = new Animal { Name = "Bar" };
-                Animal a3 = new Animal { Name = "Baz" };
+                var a1 = new Animal { Name = "Foo" };
+                var a2 = new Animal { Name = "Bar" };
+                var a3 = new Animal { Name = "Baz" };
 
                 Db.Insert<Animal>(new[] { a1, a2, a3 });
 
@@ -62,7 +62,7 @@ namespace DapperExtensions.Test.IntegrationTests.MySql
             [Test]
             public void UsingKey_ReturnsEntity()
             {
-                Person p1 = new Person
+                var p1 = new Person
                 {
                     Active = true,
                     FirstName = "Foo",
@@ -80,7 +80,7 @@ namespace DapperExtensions.Test.IntegrationTests.MySql
             [Test]
             public void UsingCompositeKey_ReturnsEntity()
             {
-                Multikey m1 = new Multikey { Key2 = "key", Value = "bar" };
+                var m1 = new Multikey { Key2 = "key", Value = "bar" };
                 var key = Db.Insert(m1);
 
                 Multikey m2 = Db.Get<Multikey>(new { key.Key1, key.Key2 });
@@ -96,7 +96,7 @@ namespace DapperExtensions.Test.IntegrationTests.MySql
             [Test]
             public void UsingKey_DeletesFromDatabase()
             {
-                Person p1 = new Person
+                var p1 = new Person
                 {
                     Active = true,
                     FirstName = "Foo",
@@ -113,7 +113,7 @@ namespace DapperExtensions.Test.IntegrationTests.MySql
             [Test]
             public void UsingCompositeKey_DeletesFromDatabase()
             {
-                Multikey m1 = new Multikey { Key2 = "key", Value = "bar" };
+                var m1 = new Multikey { Key2 = "key", Value = "bar" };
                 var key = Db.Insert(m1);
 
                 Multikey m2 = Db.Get<Multikey>(new { key.Key1, key.Key2 });
@@ -124,9 +124,9 @@ namespace DapperExtensions.Test.IntegrationTests.MySql
             [Test]
             public void UsingPredicate_DeletesRows()
             {
-                Person p1 = new Person { Active = true, FirstName = "Foo", LastName = "Bar", DateCreated = DateTime.UtcNow };
-                Person p2 = new Person { Active = true, FirstName = "Foo", LastName = "Bar", DateCreated = DateTime.UtcNow };
-                Person p3 = new Person { Active = true, FirstName = "Foo", LastName = "Barz", DateCreated = DateTime.UtcNow };
+                var p1 = new Person { Active = true, FirstName = "Foo", LastName = "Bar", DateCreated = DateTime.UtcNow };
+                var p2 = new Person { Active = true, FirstName = "Foo", LastName = "Bar", DateCreated = DateTime.UtcNow };
+                var p3 = new Person { Active = true, FirstName = "Foo", LastName = "Barz", DateCreated = DateTime.UtcNow };
                 Db.Insert(p1);
                 Db.Insert(p2);
                 Db.Insert(p3);
@@ -145,9 +145,9 @@ namespace DapperExtensions.Test.IntegrationTests.MySql
             [Test]
             public void UsingObject_DeletesRows()
             {
-                Person p1 = new Person { Active = true, FirstName = "Foo", LastName = "Bar", DateCreated = DateTime.UtcNow };
-                Person p2 = new Person { Active = true, FirstName = "Foo", LastName = "Bar", DateCreated = DateTime.UtcNow };
-                Person p3 = new Person { Active = true, FirstName = "Foo", LastName = "Barz", DateCreated = DateTime.UtcNow };
+                var p1 = new Person { Active = true, FirstName = "Foo", LastName = "Bar", DateCreated = DateTime.UtcNow };
+                var p2 = new Person { Active = true, FirstName = "Foo", LastName = "Bar", DateCreated = DateTime.UtcNow };
+                var p3 = new Person { Active = true, FirstName = "Foo", LastName = "Barz", DateCreated = DateTime.UtcNow };
                 Db.Insert(p1);
                 Db.Insert(p2);
                 Db.Insert(p3);
@@ -169,7 +169,7 @@ namespace DapperExtensions.Test.IntegrationTests.MySql
             [Test]
             public void UsingKey_UpdatesEntity()
             {
-                Person p1 = new Person
+                var p1 = new Person
                 {
                     Active = true,
                     FirstName = "Foo",
@@ -193,7 +193,7 @@ namespace DapperExtensions.Test.IntegrationTests.MySql
             [Test]
             public void UsingCompositeKey_UpdatesEntity()
             {
-                Multikey m1 = new Multikey { Key2 = "key", Value = "bar" };
+                var m1 = new Multikey { Key2 = "key", Value = "bar" };
                 var key = Db.Insert(m1);
 
                 Multikey m2 = Db.Get<Multikey>(new { key.Key1, key.Key2 });
@@ -393,7 +393,7 @@ namespace DapperExtensions.Test.IntegrationTests.MySql
                 Db.Insert(new Animal { Name = "Bar" });
                 Db.Insert(new Animal { Name = "Baz" });
 
-                GetMultiplePredicate predicate = new GetMultiplePredicate();
+                var predicate = new GetMultiplePredicate();
                 predicate.Add<Person>(null);
                 predicate.Add<Animal>(Predicates.Field<Animal>(a => a.Name, Operator.Like, "Ba%"));
                 predicate.Add<Person>(Predicates.Field<Person>(a => a.LastName, Operator.Eq, "c1"));

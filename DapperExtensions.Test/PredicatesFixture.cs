@@ -58,7 +58,7 @@ namespace DapperExtensions.Test
             [Test]
             public void Group_ReturnsSetupPredicate()
             {
-                Mock<IPredicate> subPredicate = new Mock<IPredicate>();
+                var subPredicate = new Mock<IPredicate>();
                 var predicate = Predicates.Group(GroupOperator.Or, subPredicate.Object);
                 Assert.AreEqual(GroupOperator.Or, predicate.Operator);
                 Assert.AreEqual(1, predicate.Predicates.Count);
@@ -68,7 +68,7 @@ namespace DapperExtensions.Test
             [Test]
             public void Exists_ReturnsSetupPredicate()
             {
-                Mock<IPredicate> subPredicate = new Mock<IPredicate>();
+                var subPredicate = new Mock<IPredicate>();
                 var predicate = Predicates.Exists<PredicateTestEntity2>(subPredicate.Object, true);
                 Assert.AreEqual(subPredicate.Object, predicate.Predicate);
                 Assert.AreEqual(true, predicate.Not);
@@ -77,7 +77,7 @@ namespace DapperExtensions.Test
             [Test]
             public void Between_ReturnsSetupPredicate()
             {
-                BetweenValues values = new BetweenValues();
+                var values = new BetweenValues();
                 var predicate = Predicates.Between<PredicateTestEntity>(f => f.Name, values, true);
                 Assert.AreEqual("Name", predicate.PropertyName);
                 Assert.AreEqual(values, predicate.Value);
@@ -99,7 +99,7 @@ namespace DapperExtensions.Test
             [Test]
             public void GetColumnName_WhenMapNotFound_ThrowsException()
             {
-                Mock<BasePredicate> predicate = new Mock<BasePredicate>();
+                var predicate = new Mock<BasePredicate>();
                 predicate.CallBase = true;
                 Configuration.Setup(c => c.GetMap(typeof(PredicateTestEntity))).Returns(() => null).Verifiable();
 
@@ -113,9 +113,9 @@ namespace DapperExtensions.Test
             [Test]
             public void GetColumnName_WhenPropertyNotFound_ThrowsException()
             {
-                Mock<IClassMapper> classMapper = new Mock<IClassMapper>();
-                Mock<BasePredicate> predicate = new Mock<BasePredicate>();
-                List<IPropertyMap> propertyMaps = new List<IPropertyMap>();
+                var classMapper = new Mock<IClassMapper>();
+                var predicate = new Mock<BasePredicate>();
+                var propertyMaps = new List<IPropertyMap>();
                 predicate.CallBase = true;
 
                 Configuration.Setup(c => c.GetMap(typeof(PredicateTestEntity))).Returns(classMapper.Object).Verifiable();
@@ -132,10 +132,10 @@ namespace DapperExtensions.Test
             [Test]
             public void GetColumnName_GetsColumnName()
             {
-                Mock<IClassMapper> classMapper = new Mock<IClassMapper>();
-                Mock<BasePredicate> predicate = new Mock<BasePredicate>();
-                Mock<IPropertyMap> propertyMap = new Mock<IPropertyMap>();
-                List<IPropertyMap> propertyMaps = new List<IPropertyMap> { propertyMap.Object };
+                var classMapper = new Mock<IClassMapper>();
+                var predicate = new Mock<BasePredicate>();
+                var propertyMap = new Mock<IPropertyMap>();
+                var propertyMaps = new List<IPropertyMap> { propertyMap.Object };
                 predicate.CallBase = true;
 
                 Configuration.Setup(c => c.GetMap(typeof(PredicateTestEntity))).Returns(classMapper.Object).Verifiable();
@@ -176,7 +176,7 @@ namespace DapperExtensions.Test
 
             protected Mock<ComparePredicate> Setup(Operator op, bool not)
             {
-                Mock<ComparePredicate> predicate = new Mock<ComparePredicate>();
+                var predicate = new Mock<ComparePredicate>();
                 predicate.Object.Operator = op;
                 predicate.Object.Not = not;
                 predicate.CallBase = true;
@@ -278,7 +278,7 @@ namespace DapperExtensions.Test
             
             protected Mock<FieldPredicate<T>> Setup<T>(string propertyName, Operator op, object value, bool not) where T : class
             {
-                Mock<FieldPredicate<T>> predicate = new Mock<FieldPredicate<T>>();
+                var predicate = new Mock<FieldPredicate<T>>();
                 predicate.Object.PropertyName = propertyName;
                 predicate.Object.Operator = op;
                 predicate.Object.Not = not;
@@ -311,7 +311,7 @@ namespace DapperExtensions.Test
                 where T : class
                 where T2 : class
             {
-                Mock<PropertyPredicate<T, T2>> predicate = new Mock<PropertyPredicate<T, T2>>();
+                var predicate = new Mock<PropertyPredicate<T, T2>>();
                 predicate.Object.PropertyName = propertyName;
                 predicate.Object.PropertyName2 = propertyName2;
                 predicate.Object.Operator = op;
@@ -361,7 +361,7 @@ namespace DapperExtensions.Test
             protected Mock<BetweenPredicate<T>> Setup<T>(string propertyName, Operator op, object value1, object value2, bool not)
                 where T : class
             {
-                Mock<BetweenPredicate<T>> predicate = new Mock<BetweenPredicate<T>>();
+                var predicate = new Mock<BetweenPredicate<T>>();
                 predicate.Object.PropertyName = propertyName;
                 predicate.Object.Value = new BetweenValues { Value1 = value1, Value2 = value2 };
                 predicate.Object.Not = not;
@@ -377,7 +377,7 @@ namespace DapperExtensions.Test
             [Test]
             public void EmptyPredicate__CreatesNoOp_And_ReturnsProperSql()
             {
-                Mock<IPredicate> subPredicate1 = new Mock<IPredicate>();
+                var subPredicate1 = new Mock<IPredicate>();
                 @SqlDialect.SetupGet(s => s.EmptyExpression).Returns("1=1").Verifiable();
 
                 var subPredicates = new List<IPredicate> { subPredicate1.Object, subPredicate1.Object };
@@ -398,7 +398,7 @@ namespace DapperExtensions.Test
             [Test]
             public void GetSql_And_ReturnsProperSql()
             {
-                Mock<IPredicate> subPredicate1 = new Mock<IPredicate>();
+                var subPredicate1 = new Mock<IPredicate>();
                 var subPredicates = new List<IPredicate> { subPredicate1.Object, subPredicate1.Object };
                 var predicate = Setup(GroupOperator.And, subPredicates);
                 var parameters = new Dictionary<string, object>();
@@ -416,7 +416,7 @@ namespace DapperExtensions.Test
             [Test]
             public void GetSql_Or_ReturnsProperSql()
             {
-                Mock<IPredicate> subPredicate1 = new Mock<IPredicate>();
+                var subPredicate1 = new Mock<IPredicate>();
                 var subPredicates = new List<IPredicate> { subPredicate1.Object, subPredicate1.Object };
                 var predicate = Setup(GroupOperator.Or, subPredicates);
                 var parameters = new Dictionary<string, object>();
@@ -433,7 +433,7 @@ namespace DapperExtensions.Test
 
             protected Mock<PredicateGroup> Setup(GroupOperator op, IList<IPredicate> predicates)
             {
-                Mock<PredicateGroup> predicate = new Mock<PredicateGroup>();
+                var predicate = new Mock<PredicateGroup>();
                 predicate.Object.Operator = op;
                 predicate.Object.Predicates = predicates;
                 predicate.CallBase = true;
@@ -447,8 +447,8 @@ namespace DapperExtensions.Test
             [Test]
             public void GetSql_WithoutNot_ReturnsProperSql()
             {
-                Mock<IPredicate> subPredicate = new Mock<IPredicate>();
-                Mock<IClassMapper> subMap = new Mock<IClassMapper>();
+                var subPredicate = new Mock<IPredicate>();
+                var subMap = new Mock<IClassMapper>();
                 var predicate = Setup<PredicateTestEntity2>(subPredicate.Object, subMap.Object, false);
                 Generator.Setup(g => g.GetTableName(subMap.Object)).Returns("subTable").Verifiable();
                 
@@ -468,8 +468,8 @@ namespace DapperExtensions.Test
             [Test]
             public void GetSql_WithNot_ReturnsProperSql()
             {
-                Mock<IPredicate> subPredicate = new Mock<IPredicate>();
-                Mock<IClassMapper> subMap = new Mock<IClassMapper>();
+                var subPredicate = new Mock<IPredicate>();
+                var subMap = new Mock<IClassMapper>();
                 var predicate = Setup<PredicateTestEntity2>(subPredicate.Object, subMap.Object, true);
                 Generator.Setup(g => g.GetTableName(subMap.Object)).Returns("subTable").Verifiable();
 
@@ -504,7 +504,7 @@ namespace DapperExtensions.Test
             [Test]
             public void GetClassMapper_ReturnsMap()
             {
-                Mock<IClassMapper> classMap = new Mock<IClassMapper>();
+                var classMap = new Mock<IClassMapper>();
                 var predicate = new Mock<ExistsPredicate<PredicateTestEntity>>();
                 predicate.CallBase = true;
 
@@ -519,7 +519,7 @@ namespace DapperExtensions.Test
 
             protected Mock<ExistsPredicate<T>> Setup<T>(IPredicate predicate, IClassMapper classMap, bool not) where T : class
             {
-                Mock<ExistsPredicate<T>> result = new Mock<ExistsPredicate<T>>();
+                var result = new Mock<ExistsPredicate<T>>();
                 result.Object.Predicate = predicate;
                 result.Object.Not = not;
                 result.Protected().Setup<IClassMapper>("GetClassMapper", typeof (T), Configuration.Object).Returns(classMap).Verifiable();

@@ -32,7 +32,7 @@ namespace DapperExtensions.Test.IntegrationTests.Sqlite
                 File.Delete(file);
             }
 
-            SQLiteConnection connection = new SQLiteConnection(connectionString);
+            var connection = new SQLiteConnection(connectionString);
             var config = new DapperExtensionsConfiguration(typeof(AutoClassMapper<>), new List<Assembly>(), new SqliteDialect());
             var sqlGenerator = new SqlGeneratorImpl(config);
             Db = new Database(connection, sqlGenerator);
@@ -79,7 +79,7 @@ namespace DapperExtensions.Test.IntegrationTests.Sqlite
             FileStream fs = null;
             try
             {
-                FileInfo fi = new FileInfo(databaseName);
+                var fi = new FileInfo(databaseName);
                 fs = fi.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
                 return false;
             }

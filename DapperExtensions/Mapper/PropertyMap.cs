@@ -1,23 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace DapperExtensions.Mapper
 {
-    /// <summary>
-    /// Maps an entity property to its corresponding column in the database.
-    /// </summary>
-    public interface IPropertyMap
-    {
-        string Name { get; }
-        string ColumnName { get; }
-        bool Ignored { get; }
-        bool IsReadOnly { get; }
-        KeyType KeyType { get; }
-        PropertyInfo PropertyInfo { get; }
-    }
-
     /// <summary>
     /// Maps an entity property to its corresponding column in the database.
     /// </summary>
@@ -32,10 +17,7 @@ namespace DapperExtensions.Mapper
         /// <summary>
         /// Gets the name of the property by using the specified propertyInfo.
         /// </summary>
-        public string Name
-        {
-            get { return PropertyInfo.Name; }
-        }
+        public string Name => PropertyInfo.Name;
 
         /// <summary>
         /// Gets the column name for the current property.
@@ -60,7 +42,7 @@ namespace DapperExtensions.Mapper
         /// <summary>
         /// Gets the property info for the current property.
         /// </summary>
-        public PropertyInfo PropertyInfo { get; private set; }
+        public PropertyInfo PropertyInfo { get; }
 
         /// <summary>
         /// Fluently sets the column name for the property.
@@ -75,18 +57,11 @@ namespace DapperExtensions.Mapper
         /// <summary>
         /// Fluently sets the key type of the property.
         /// </summary>
-        /// <param name="columnName">The column name as it exists in the database.</param>
+        /// <param name="keyType">The column name as it exists in the database.</param>
         public PropertyMap Key(KeyType keyType)
         {
-            if (Ignored)
-            {
-                throw new ArgumentException(string.Format("'{0}' is ignored and cannot be made a key field. ", Name));
-            }
-
-            if (IsReadOnly)
-            {
-                throw new ArgumentException(string.Format("'{0}' is readonly and cannot be made a key field. ", Name));
-            }
+            if (Ignored) throw new ArgumentException($"{Name} is ignored and cannot be made a key field.");
+            if (IsReadOnly) throw new ArgumentException($"{Name} is readonly and cannot be made a key field.");
 
             KeyType = keyType;
             return this;
@@ -98,9 +73,7 @@ namespace DapperExtensions.Mapper
         public PropertyMap Ignore()
         {
             if (KeyType != KeyType.NotAKey)
-            {
-                throw new ArgumentException(string.Format("'{0}' is a key field and cannot be ignored.", Name));
-            }
+                throw new ArgumentException($"{Name} is a key field and cannot be ignored.");
 
             Ignored = true;
             return this;
@@ -112,38 +85,10 @@ namespace DapperExtensions.Mapper
         public PropertyMap ReadOnly()
         {
             if (KeyType != KeyType.NotAKey)
-            {
-                throw new ArgumentException(string.Format("'{0}' is a key field and cannot be marked readonly.", Name));
-            }
+                throw new ArgumentException($"{Name} is a key field and cannot be marked readonly.");
 
             IsReadOnly = true;
             return this;
         }
-    }
-
-    /// <summary>
-    /// Used by ClassMapper to determine which entity property represents the key.
-    /// </summary>
-    public enum KeyType
-    {
-        /// <summary>
-        /// The property is not a key and is not automatically managed.
-        /// </summary>
-        NotAKey,
-
-        /// <summary>
-        /// The property is an integery-based identity generated from the database.
-        /// </summary>
-        Identity,
-
-        /// <summary>
-        /// The property is a Guid identity which is automatically managed.
-        /// </summary>
-        Guid,
-
-        /// <summary>
-        /// The property is a key that is not automatically managed.
-        /// </summary>
-        Assigned
     }
 }

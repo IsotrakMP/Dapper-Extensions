@@ -7,29 +7,17 @@ namespace DapperExtensions.Sql
 {
     public class SqlCeDialect : SqlDialectBase
     {
-        public override char OpenQuote
-        {
-            get { return '['; }
-        }
+        public override char OpenQuote => '['; 
 
-        public override char CloseQuote
-        {
-            get { return ']'; }
-        }
+        public override char CloseQuote => ']'; 
 
-        public override bool SupportsMultipleStatements
-        {
-            get { return false; }
-        }
+        public override bool SupportsMultipleStatements => false; 
 
         public override string GetTableName(string schemaName, string tableName, string alias)
         {
-            if (string.IsNullOrWhiteSpace(tableName))
-            {
-                throw new ArgumentNullException("TableName");
-            }
+            if (string.IsNullOrWhiteSpace(tableName)) throw new ArgumentNullException(nameof(tableName));
 
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             result.Append(OpenQuote);
             if (!string.IsNullOrWhiteSpace(schemaName))
             {
@@ -47,23 +35,16 @@ namespace DapperExtensions.Sql
             return result.ToString();
         }
 
-        public override string GetIdentitySql(string tableName)
-        {
-            return "SELECT CAST(@@IDENTITY AS BIGINT) AS [Id]";
-        }
-
-        public override string GetPagingSql(string sql, int page, int resultsPerPage, IDictionary<string, object> parameters)
-        {
-            int startValue = (page * resultsPerPage);
-            return GetSetSql(sql, startValue, resultsPerPage, parameters);
-        }
-
+        public override string GetIdentitySql(string tableName) => "SELECT CAST(@@IDENTITY AS BIGINT) AS [Id]";
+        
+        public override string GetPagingSql(string sql, int page, int resultsPerPage, IDictionary<string, object> parameters) =>
+            GetSetSql(sql, (page * resultsPerPage), resultsPerPage, parameters);
+        
         public override string GetSetSql(string sql, int firstResult, int maxResults, IDictionary<string, object> parameters)
         {
-            string result = string.Format("{0} OFFSET @firstResult ROWS FETCH NEXT @maxResults ROWS ONLY", sql);
             parameters.Add("@firstResult", firstResult);
             parameters.Add("@maxResults", maxResults);
-            return result;            
+            return $"{sql} OFFSET @firstResult ROWS FETCH NEXT @maxResults ROWS ONLY";
         }
     }
 }

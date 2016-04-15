@@ -17,7 +17,7 @@ namespace DapperExtensions.Test.IntegrationTests.SqlServer
             [Test]
             public void IdentityKey_UsingEntity()
             {
-                Person p = new Person
+                var p = new Person
                                {
                                    FirstName = "FirstName",
                                    LastName = "LastName",
@@ -26,10 +26,10 @@ namespace DapperExtensions.Test.IntegrationTests.SqlServer
                                };
                 Db.Insert(p);
                 DateTime start = DateTime.Now;
-                List<int> ids = new List<int>();
+                var ids = new List<int>();
                 for (int i = 0; i < cnt; i++)
                 {
-                    Person p2 = new Person
+                    var p2 = new Person
                                     {
                                         FirstName = "FirstName" + i,
                                         LastName = "LastName" + i,
@@ -48,7 +48,7 @@ namespace DapperExtensions.Test.IntegrationTests.SqlServer
             [Test]
             public void IdentityKey_UsingReturnValue()
             {
-                Person p = new Person
+                var p = new Person
                                {
                                    FirstName = "FirstName",
                                    LastName = "LastName",
@@ -57,10 +57,10 @@ namespace DapperExtensions.Test.IntegrationTests.SqlServer
                                };
                 Db.Insert(p);
                 DateTime start = DateTime.Now;
-                List<int> ids = new List<int>();
+                var ids = new List<int>();
                 for (int i = 0; i < cnt; i++)
                 {
-                    Person p2 = new Person
+                    var p2 = new Person
                                     {
                                         FirstName = "FirstName" + i,
                                         LastName = "LastName" + i,
@@ -79,13 +79,13 @@ namespace DapperExtensions.Test.IntegrationTests.SqlServer
             [Test]
             public void GuidKey_UsingEntity()
             {
-                Animal a = new Animal { Name = "Name" };
+                var a = new Animal { Name = "Name" };
                 Db.Insert(a);
                 DateTime start = DateTime.Now;
-                List<Guid> ids = new List<Guid>();
+                var ids = new List<Guid>();
                 for (int i = 0; i < cnt; i++)
                 {
-                    Animal a2 = new Animal { Name = "Name" + i };
+                    var a2 = new Animal { Name = "Name" + i };
                     Db.Insert(a2);
                     ids.Add(a2.Id);
                 }
@@ -98,13 +98,13 @@ namespace DapperExtensions.Test.IntegrationTests.SqlServer
             [Test]
             public void GuidKey_UsingReturnValue()
             {
-                Animal a = new Animal { Name = "Name" };
+                var a = new Animal { Name = "Name" };
                 Db.Insert(a);
                 DateTime start = DateTime.Now;
-                List<Guid> ids = new List<Guid>();
+                var ids = new List<Guid>();
                 for (int i = 0; i < cnt; i++)
                 {
-                    Animal a2 = new Animal { Name = "Name" + i };
+                    var a2 = new Animal { Name = "Name" + i };
                     var id = Db.Insert(a2);
                     ids.Add(id);
                 }
@@ -117,14 +117,14 @@ namespace DapperExtensions.Test.IntegrationTests.SqlServer
             [Test]
             public void AssignKey_UsingEntity()
             {
-                Car ca = new Car { Id = string.Empty.PadLeft(15, '0'), Name = "Name" };
+                var ca = new Car { Id = string.Empty.PadLeft(15, '0'), Name = "Name" };
                 Db.Insert(ca);
                 DateTime start = DateTime.Now;
-                List<string> ids = new List<string>();
+                var ids = new List<string>();
                 for (int i = 0; i < cnt; i++)
                 {
                     var key = (i + 1).ToString().PadLeft(15, '0');
-                    Car ca2 = new Car { Id = key, Name = "Name" + i };
+                    var ca2 = new Car { Id = key, Name = "Name" + i };
                     Db.Insert(ca2);
                     ids.Add(ca2.Id);
                 }
@@ -137,14 +137,14 @@ namespace DapperExtensions.Test.IntegrationTests.SqlServer
             [Test]
             public void AssignKey_UsingReturnValue()
             {
-                Car ca = new Car { Id = string.Empty.PadLeft(15, '0'), Name = "Name" };
+                var ca = new Car { Id = string.Empty.PadLeft(15, '0'), Name = "Name" };
                 Db.Insert(ca);
                 DateTime start = DateTime.Now;
-                List<string> ids = new List<string>();
+                var ids = new List<string>();
                 for (int i = 0; i < cnt; i++)
                 {
                     var key = (i + 1).ToString().PadLeft(15, '0');
-                    Car ca2 = new Car { Id = key, Name = "Name" + i };
+                    var ca2 = new Car { Id = key, Name = "Name" + i };
                     var id = Db.Insert(ca2);
                     ids.Add(id);
                 }

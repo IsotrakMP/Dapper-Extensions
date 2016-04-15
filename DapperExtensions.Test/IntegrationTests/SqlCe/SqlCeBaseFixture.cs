@@ -37,7 +37,7 @@ namespace DapperExtensions.Test.IntegrationTests.SqlCe
                 ce.CreateDatabase();
             }
 
-            SqlCeConnection connection = new SqlCeConnection(connectionString);
+            var connection = new SqlCeConnection(connectionString);
             var config = new DapperExtensionsConfiguration(typeof(AutoClassMapper<>), new List<Assembly>(), new SqlCeDialect());
             var sqlGenerator = new SqlGeneratorImpl(config);
             Db = new Database(connection, sqlGenerator);
@@ -84,7 +84,7 @@ namespace DapperExtensions.Test.IntegrationTests.SqlCe
             FileStream fs = null;
             try
             {
-                FileInfo fi = new FileInfo(databaseName);
+                var fi = new FileInfo(databaseName);
                 fs = fi.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
                 return false;
             }

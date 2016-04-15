@@ -219,7 +219,7 @@ namespace DapperExtensions.Test.Mapper
             [Test]
             public void DoesNotMapAlreadyMappedProperties()
             {
-                Mock<IPropertyMap> property = new Mock<IPropertyMap>();
+                var property = new Mock<IPropertyMap>();
                 property.SetupGet(p => p.Name).Returns("FooId");
                 property.SetupGet(p => p.KeyType).Returns(KeyType.Assigned);
 
@@ -286,7 +286,8 @@ namespace DapperExtensions.Test.Mapper
             public IEnumerable<string> List { get; set; }
         }
 
-        public class TestMapper<T> : ClassMapper<T> where T : class
+        public class TestMapper<T> : ClassMapper<T> 
+            where T : class
         {
             public PropertyMap Map(Expression<Func<T, object>> expression)
             {

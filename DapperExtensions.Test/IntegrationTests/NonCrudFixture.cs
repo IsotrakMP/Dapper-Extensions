@@ -20,7 +20,7 @@ namespace DapperExtensions.Test.IntegrationTests
             [Test]
             public void GetMultiple_DoesNotDuplicate()
             {
-                List<Guid> list = new List<Guid>();
+                var list = new List<Guid>();
                 for (int i = 0; i < 1000; i++)
                 {
                     Guid id = DapperExtensions.GetNextGuid();

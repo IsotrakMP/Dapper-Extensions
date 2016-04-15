@@ -15,7 +15,7 @@ namespace DapperExtensions.Test.Helpers
         {
             if (obj == null)
             {
-                throw new ArgumentException("object cannot be null.", "obj");
+                throw new ArgumentException("object cannot be null.", nameof(obj));
             }
 
             _obj = obj;

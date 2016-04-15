@@ -1,41 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace DapperExtensions
 {
     public class GetMultiplePredicate
     {
-        private readonly List<GetMultiplePredicateItem> _items;
+        private readonly List<GetMultiplePredicateItem> items = new List<GetMultiplePredicateItem>();
 
-        public GetMultiplePredicate()
+        public IEnumerable<GetMultiplePredicateItem> Items => items.AsReadOnly(); 
+
+        public void Add<T>(IPredicate predicate, IList<ISort> sort = null)
+            where T : class
         {
-            _items = new List<GetMultiplePredicateItem>();
+            items.Add(new GetMultiplePredicateItem { Value = predicate, Type = typeof(T), Sort = sort });
         }
 
-        public IEnumerable<GetMultiplePredicateItem> Items
+        public void Add<T>(object id)
+            where T : class
         {
-            get { return _items.AsReadOnly(); }
-        }
-
-        public void Add<T>(IPredicate predicate, IList<ISort> sort = null) where T : class
-        {
-            _items.Add(new GetMultiplePredicateItem
-                           {
-                               Value = predicate,
-                               Type = typeof(T),
-                               Sort = sort
-                           });
-        }
-
-        public void Add<T>(object id) where T : class
-        {
-            _items.Add(new GetMultiplePredicateItem
-                           {
-                               Value = id,
-                               Type = typeof (T)
-                           });
+            items.Add(new GetMultiplePredicateItem { Value = id, Type = typeof (T) });
         }
 
         public class GetMultiplePredicateItem
