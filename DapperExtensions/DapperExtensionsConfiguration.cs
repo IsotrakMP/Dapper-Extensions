@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using DapperExtensions.Mapper;
 using DapperExtensions.Sql;
 
@@ -11,7 +10,7 @@ namespace DapperExtensions
 {
     public class DapperExtensionsConfiguration : IDapperExtensionsConfiguration
     {
-        private readonly ConcurrentDictionary<Type, IClassMapper> _classMaps = new ConcurrentDictionary<Type, IClassMapper>();
+        private readonly ConcurrentDictionary<Type, IClassMapper> classMaps = new ConcurrentDictionary<Type, IClassMapper>();
 
         public DapperExtensionsConfiguration()
             : this(typeof(AutoClassMapper<>), new List<Assembly>(), new SqlServerDialect())
@@ -26,37 +25,31 @@ namespace DapperExtensions
             Dialect = sqlDialect;
         }
 
-        public Type DefaultMapper { get; private set; }
-        public IList<Assembly> MappingAssemblies { get; private set; }
-        public ISqlDialect Dialect { get; private set; }
+        public Type DefaultMapper { get;  }
+        public IList<Assembly> MappingAssemblies { get; }
+        public ISqlDialect Dialect { get; }
 
         public IClassMapper GetMap(Type entityType)
         {
             IClassMapper map;
-            if (!_classMaps.TryGetValue(entityType, out map))
+            if (!classMaps.TryGetValue(entityType, out map))
             {
-                Type mapType = GetMapType(entityType);
-                if (mapType == null)
-                {
-                    mapType = DefaultMapper.MakeGenericType(entityType);
-                }
+                var mapType = GetMapType(entityType) ?? DefaultMapper.MakeGenericType(entityType);
 
                 map = Activator.CreateInstance(mapType) as IClassMapper;
-                _classMaps[entityType] = map;
+                classMaps[entityType] = map;
             }
 
             return map;
         }
 
-        public IClassMapper GetMap<T>() where T : class
+        public IClassMapper GetMap<T>() 
+            where T : class
         {
             return GetMap(typeof (T));
         }
 
-        public void ClearCache()
-        {
-            _classMaps.Clear();
-        }
+        public void ClearCache() => classMaps.Clear();
 
         public Guid GetNextGuid()
         {
@@ -78,7 +71,7 @@ namespace DapperExtensions
         {
             Func<Assembly, Type> getType = a =>
             {
-                Type[] types = a.GetTypes();
+                var types = a.GetTypes();
                 return (from type in types
                         let interfaceType = type.GetInterface(typeof(IClassMapper<>).FullName)
                         where
@@ -87,7 +80,7 @@ namespace DapperExtensions
                         select type).SingleOrDefault();
             };
 
-            Type result = getType(entityType.Assembly);
+            var result = getType(entityType.Assembly);
             if (result != null)
             {
                 return result;
