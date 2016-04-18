@@ -9,7 +9,7 @@ namespace DapperExtensions
 {
     public static class ReflectionHelper
     {
-        private static List<Type> simpleTypes = new List<Type>
+        private static List<Type> _simpleTypes = new List<Type>
         {
             typeof (byte),
             typeof (sbyte),
@@ -46,7 +46,7 @@ namespace DapperExtensions
                         break;
                     case ExpressionType.MemberAccess:
                         var memberExpression = (MemberExpression) expr;
-                        MemberInfo mi = memberExpression.Member;
+                        var mi = memberExpression.Member;
                         return mi;
                     default:
                         return null;
@@ -64,7 +64,7 @@ namespace DapperExtensions
 
             foreach (var propertyInfo in obj.GetType().GetProperties())
             {
-                string name = propertyInfo.Name;
+                var name = propertyInfo.Name;
                 result[name] = propertyInfo.GetValue(obj, null);
             }
 
@@ -79,7 +79,7 @@ namespace DapperExtensions
                 actualType = type.GetGenericArguments()[0];
             }
 
-            return simpleTypes.Contains(actualType);
+            return _simpleTypes.Contains(actualType);
         }
 
         public static string AppendStrings(this IEnumerable<string> list, string seperator = ", ")
@@ -95,7 +95,7 @@ namespace DapperExtensions
         
         public static string SetParameterName(this IDictionary<string, object> parameters, string parameterName,object value, char parameterPrefix)
         { 
-            string name = parameters.GetParameterName(parameterName, parameterPrefix);
+            var name = parameters.GetParameterName(parameterName, parameterPrefix);
             parameters.Add(name, value);
             return name;
         }

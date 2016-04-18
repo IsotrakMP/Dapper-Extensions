@@ -9,11 +9,15 @@
     <projectUrl>https://github.com/tmsmith/Dapper-Extensions</projectUrl>
     <!--<iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>-->
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A small library that complements Dapper by adding basic CRUD operations (Get, Insert, Update, Delete) for your POCOs. For more advanced querying scenarios, Dapper Extensions provides a predicate system.</description>
+    <description>
+		A small library that complements Dapper by adding both synchronous and asynchronous basic CRUD operations (Get, Insert, Update, Delete) for your POCOs. 
+		For more advanced querying scenarios, Dapper Extensions provides a predicate system.
+	</description>
     <releaseNotes>
 	1.5.0 
 	  * Added async versions to CRUD and get calls. 
 	  * Updated code to dot-net 4.6.1 and Roslyn compliler
+	  * Separated class/interface into their files in all cases.
     1.4.4
       * ReadOnly property not being checked (ptct.rmsantos)
       * Cast Error when inserting in MySql (cortz)
@@ -43,7 +47,7 @@
       <frameworkAssembly assemblyName="System.Core"/>
       <frameworkAssembly assemblyName="System"/>
       <frameworkAssembly assemblyName="System.Data"/>
-      <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework=".NETFramework4.0-Client, .NETFramework4.6.1 />
+      <frameworkAssembly assemblyName="Microsoft.CSharp" targetFramework=".NETFramework4.0, .NETFramework4.6.1 />
     </frameworkAssemblies>
   </metadata>
   <files>

@@ -20,7 +20,8 @@ namespace DapperExtensions
 
         public ISqlGenerator SqlGenerator { get; }
 
-        public T Get<T>(IDbConnection connection, dynamic id, IDbTransaction transaction, int? commandTimeout) where T : class
+        public T Get<T>(IDbConnection connection, dynamic id, IDbTransaction transaction, int? commandTimeout)
+            where T : class
         {
             var classMap = SqlGenerator.Configuration.GetMap<T>();
             var predicate = GetIdPredicate(classMap, id);
@@ -37,7 +38,8 @@ namespace DapperExtensions
             return (await GetListAsync<T>(connection, classMap, predicate, null, transaction, commandTimeout)).SingleOrDefault();
         }
 
-        public void Insert<T>(IDbConnection connection, IEnumerable<T> entities, IDbTransaction transaction, int? commandTimeout) where T : class
+        public void Insert<T>(IDbConnection connection, IEnumerable<T> entities, IDbTransaction transaction, int? commandTimeout)
+            where T : class
         {
             var classMap = SqlGenerator.Configuration.GetMap<T>();
             var properties = classMap.Properties.Where(p => p.KeyType != KeyType.NotAKey);
@@ -57,7 +59,8 @@ namespace DapperExtensions
             connection.Execute(sql, entities, transaction, commandTimeout, CommandType.Text);
         }
 
-        public async Task InsertAsync<T>(IDbConnection connection, IEnumerable<T> entities, IDbTransaction transaction, int? commandTimeout) where T : class
+        public async Task InsertAsync<T>(IDbConnection connection, IEnumerable<T> entities, IDbTransaction transaction, int? commandTimeout)
+            where T : class
         {
             var classMap = SqlGenerator.Configuration.GetMap<T>();
             var properties = classMap.Properties.Where(p => p.KeyType != KeyType.NotAKey);
@@ -77,7 +80,8 @@ namespace DapperExtensions
             await connection.ExecuteAsync(sql, entities, transaction, commandTimeout, CommandType.Text);
         }
 
-        public dynamic Insert<T>(IDbConnection connection, T entity, IDbTransaction transaction, int? commandTimeout) where T : class
+        public dynamic Insert<T>(IDbConnection connection, T entity, IDbTransaction transaction, int? commandTimeout)
+            where T : class
         {
             var classMap = SqlGenerator.Configuration.GetMap<T>();
             var nonIdentityKeyProperties = classMap.Properties.Where(p => p.KeyType == KeyType.Guid || p.KeyType == KeyType.Assigned).ToList();
@@ -125,7 +129,8 @@ namespace DapperExtensions
             return keyValues.Count == 1 ? keyValues.First().Value : keyValues;
         }
 
-        public async Task<dynamic> InsertAsync<T>(IDbConnection connection, T entity, IDbTransaction transaction, int? commandTimeout) where T : class
+        public async Task<dynamic> InsertAsync<T>(IDbConnection connection, T entity, IDbTransaction transaction, int? commandTimeout)
+            where T : class
         {
             var classMap = SqlGenerator.Configuration.GetMap<T>();
             var nonIdentityKeyProperties = classMap.Properties.Where(p => p.KeyType == KeyType.Guid || p.KeyType == KeyType.Assigned).ToList();

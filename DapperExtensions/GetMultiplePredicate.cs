@@ -5,20 +5,20 @@ namespace DapperExtensions
 {
     public class GetMultiplePredicate
     {
-        private readonly List<GetMultiplePredicateItem> items = new List<GetMultiplePredicateItem>();
+        private readonly List<GetMultiplePredicateItem> _items = new List<GetMultiplePredicateItem>();
 
-        public IEnumerable<GetMultiplePredicateItem> Items => items.AsReadOnly(); 
+        public IEnumerable<GetMultiplePredicateItem> Items => _items.AsReadOnly(); 
 
         public void Add<T>(IPredicate predicate, IList<ISort> sort = null)
             where T : class
         {
-            items.Add(new GetMultiplePredicateItem { Value = predicate, Type = typeof(T), Sort = sort });
+            _items.Add(new GetMultiplePredicateItem { Value = predicate, Type = typeof(T), Sort = sort });
         }
 
         public void Add<T>(object id)
             where T : class
         {
-            items.Add(new GetMultiplePredicateItem { Value = id, Type = typeof (T) });
+            _items.Add(new GetMultiplePredicateItem { Value = id, Type = typeof (T) });
         }
 
         public class GetMultiplePredicateItem

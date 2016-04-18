@@ -10,7 +10,7 @@ namespace DapperExtensions
 {
     public class DapperExtensionsConfiguration : IDapperExtensionsConfiguration
     {
-        private readonly ConcurrentDictionary<Type, IClassMapper> classMaps = new ConcurrentDictionary<Type, IClassMapper>();
+        private readonly ConcurrentDictionary<Type, IClassMapper> _classMaps = new ConcurrentDictionary<Type, IClassMapper>();
 
         public DapperExtensionsConfiguration()
             : this(typeof(AutoClassMapper<>), new List<Assembly>(), new SqlServerDialect())
@@ -32,12 +32,12 @@ namespace DapperExtensions
         public IClassMapper GetMap(Type entityType)
         {
             IClassMapper map;
-            if (!classMaps.TryGetValue(entityType, out map))
+            if (!_classMaps.TryGetValue(entityType, out map))
             {
                 var mapType = GetMapType(entityType) ?? DefaultMapper.MakeGenericType(entityType);
 
                 map = Activator.CreateInstance(mapType) as IClassMapper;
-                classMaps[entityType] = map;
+                _classMaps[entityType] = map;
             }
 
             return map;
@@ -49,7 +49,7 @@ namespace DapperExtensions
             return GetMap(typeof (T));
         }
 
-        public void ClearCache() => classMaps.Clear();
+        public void ClearCache() => _classMaps.Clear();
 
         public Guid GetNextGuid()
         {
